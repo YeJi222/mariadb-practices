@@ -59,14 +59,22 @@ select distinct dept_name from departments order by char_length(dept_name);
 
 -- 문제8.
 -- 현재 급여가 120,000이상 받는 사원은 몇 명이나 있습니까?
+select count(*) from employees, salaries 
+where salary >= 120000 AND employees.emp_no = salaries.emp_no
+AND NOW() BETWEEN from_date AND to_date;
 
 -- 문제9.
 -- 어떤 직책들이 있나요? 중복 없이 이름이 긴 순서대로 출력해 보세요.
+select distinct title from titles order by char_length(title);
 
 -- 문제10
 -- 현재 Enginner 직책의 사원은 총 몇 명입니까?
+select count(*) from employees, titles 
+where title='Engineer' AND employees.emp_no=titles.emp_no
+AND NOW() BETWEEN from_date AND to_date;
 
 -- 문제11
--- 사번이 13250(Zeydy)인 지원이 직책 변경 상황을 시간순으로 출력해보세요.
+-- 사번이 13250(Zeydy)인 직원이 직책 변경 상황을 시간순으로 출력해보세요.
+select * from titles where emp_no=13250 order by from_date;
 
-
+select * from titles;
