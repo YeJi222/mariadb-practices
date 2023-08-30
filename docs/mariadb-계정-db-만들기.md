@@ -28,4 +28,11 @@ flush privileges;
 password: webdb
 ```
 
+6. workbench에서 load 명령어 쓸 때, 세팅 필요
+- Database > Manage Server Connections > Connection > Advanced > Others:
+```sh
+...
 OPT_LOCAL_INFILE=1
+...
+````
+<img width="397" alt="image" src="https://github.com/YeJi222/mariadb-practices/assets/70511859/d69e6b86-645a-4a54-89ce-5f49bfdba28c">
