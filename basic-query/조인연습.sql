@@ -94,7 +94,7 @@ group by a.title
 having count(*) >= 100;
 
 -- 실습문제3
--- 현재, 부서별로 직책이 Engineer인 지원즐에 대해서만 평균연봉을 구하세요.
+-- 현재, 부서별로 직책이 Engineer인 직원들에 대해서만 평균연봉을 구하세요.
 -- 부서이름, 평균급여로 출력하고 평균연봉이 높은 순으로 정렬 하세요.
 select dept_name, avg(salary)
 from dept_emp a, departments b, salaries c, titles d
