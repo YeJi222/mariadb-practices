@@ -97,10 +97,11 @@ having count(*) >= 100;
 -- 현재, 부서별로 직책이 Engineer인 지원즐에 대해서만 평균연봉을 구하세요.
 -- 부서이름, 평균급여로 출력하고 평균연봉이 높은 순으로 정렬 하세요.
 select dept_name, avg(salary)
-from employees a, dept_emp b, departments c, salaries d, titles e
-where a.emp_no = b.emp_no and b.dept_no = c.dept_no and a.emp_no = d.emp_no and a.emp_no = e.emp_no
-and b.to_date = '9999-01-01' and d.to_date = '9999-01-01' and d.to_date = '9999-01-01'
+from dept_emp a, departments b, salaries c, titles d
+where a.dept_no = b.dept_no and a.emp_no = c.emp_no and c.emp_no = d.emp_no
+and a.to_date = '9999-01-01' and c.to_date = '9999-01-01' and d.to_date = '9999-01-01'
 and title = 'Engineer'
+group by dept_name
 order by avg(salary) desc;
 
 
