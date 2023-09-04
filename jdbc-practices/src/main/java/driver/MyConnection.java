@@ -20,16 +20,15 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 
 public class MyConnection implements Connection {
+	@Override
+	public String toString() {
+		return "JDBC Driver 작동 원리를 이해하기 위해 Mock Connection";
+	}
 
 	@Override
 	public <T> T unwrap(Class<T> iface) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public String toString() {
-		return "JDBC Driver 작동 원리를 이해하기 위해 Mock Connection";
 	}
 
 	@Override
