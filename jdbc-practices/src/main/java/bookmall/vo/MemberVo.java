@@ -40,7 +40,7 @@ public class MemberVo {
 	
 	@Override
 	public String toString() {
-		return "MemberVo [no=" + no + ", name=" + name + ", phone=" + phone + ", email=" + email + ", password="
+		return "MemberVo [name=" + name + ", phone=" + phone + ", email=" + email + ", password="
 				+ password + "]";
 	}
 }
