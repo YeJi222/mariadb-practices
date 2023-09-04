@@ -3,50 +3,53 @@ package test;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class UpdateTest01 {
+public class SelectTest02 {
 
 	public static void main(String[] args) {
-		DeptVo vo = new DeptVo();
-		vo.setNo(2L);
-		vo.setName("품질관리팀");
-		
-		boolean result = updateDepartment(vo);
-		System.out.println(result ? "성공" : "실패");
+		searchEmployees("ko");
 	}
-
-	private static boolean updateDepartment(DeptVo vo) {	
-		boolean result = false;
-		
+	
+	public static void searchEmployees(String keyword) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		
 		try {
 			//1. JDBC Driver Class 로딩
 			Class.forName("org.mariadb.jdbc.Driver");
 			
 			//2. 연결하기
-			String url = "jdbc:mariadb://192.168.64.9:3307/webdb?charset=utf8";
-			conn = DriverManager.getConnection(url, "webdb", "webdb");
+			String url = "jdbc:mariadb://192.168.64.9:3307/employees?charset=utf8";
+			conn = DriverManager.getConnection(url, "hr", "hr");
 
 			//3. SQL 준비 
 			String sql =
-				"update dept" +
-				" set name=?" +
-				" where no=?";
+					"select emp_no, first_name, last_name" +
+				    "  from employees" +
+					" where first_name like ?" +
+					"   and last_name like ?";
 			pstmt = conn.prepareStatement(sql);
 			
 			//4. binding
-			pstmt.setString(1,  vo.getName());
-			pstmt.setLong(2, vo.getNo());
+			pstmt.setString(1,  "%" + keyword + "%");
+			pstmt.setString(2, "%" + keyword + "%");
 			
-			//5. SQL 실행 
-			int count =pstmt.executeUpdate(sql);
+			//4. SQL 실행
+			rs = pstmt.executeQuery();
 			
 			//5. 결과 처리
-			result = count == 1;
+			while(rs.next()) {
+				Long empNo = rs.getLong(1);
+				String firstName = rs.getString(2);
+				String lastName = rs.getString(3);
+				
+				System.out.println(empNo + ":" + firstName + ":" + lastName);
+			}
+			
 		} catch (ClassNotFoundException e) {
 			System.out.println("드라이버 로딩 실패:" + e);
 		} catch (SQLException e) {
@@ -54,6 +57,9 @@ public class UpdateTest01 {
 		} finally {
 			try {
 				// 6. 자원정리
+				if(rs != null) {
+					rs.close();
+				}
 				if(pstmt != null) {
 					pstmt.close();
 				}
@@ -64,8 +70,6 @@ public class UpdateTest01 {
 				e.printStackTrace();
 			}
 		}		
-		
-		return result;
 	}
 
 }

@@ -34,7 +34,7 @@ public class InsertTest01 {
 			String sql =
 				"insert" +
 				" into dept" +
-				" values (1, '" + name + "')";
+				" values (2, '" + name + "')";
 			
 			int count = stmt.executeUpdate(sql);
 			

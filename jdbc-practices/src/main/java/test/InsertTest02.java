@@ -3,21 +3,18 @@ package test;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class UpdateTest01 {
+public class InsertTest02 {
 
 	public static void main(String[] args) {
-		DeptVo vo = new DeptVo();
-		vo.setNo(2L);
-		vo.setName("품질관리팀");
-		
-		boolean result = updateDepartment(vo);
+		boolean result = insertDepartment("QA팀");
 		System.out.println(result ? "성공" : "실패");
 	}
 
-	private static boolean updateDepartment(DeptVo vo) {	
+	private static boolean insertDepartment(String name) {
 		boolean result = false;
 		
 		Connection conn = null;
@@ -33,17 +30,17 @@ public class UpdateTest01 {
 
 			//3. SQL 준비 
 			String sql =
-				"update dept" +
-				" set name=?" +
-				" where no=?";
-			pstmt = conn.prepareStatement(sql);
+					"insert" +
+					" into dept" +
+					" values (?, ?)";
+			pstmt = conn.prepareStatement(sql); // sql 준비 
 			
-			//4. binding
-			pstmt.setString(1,  vo.getName());
-			pstmt.setLong(2, vo.getNo());
+			//4. 값 binding
+			pstmt.setLong(1, 1);
+			pstmt.setString(2, name);
 			
-			//5. SQL 실행 
-			int count =pstmt.executeUpdate(sql);
+			//4. SQL 실행
+			int count = pstmt.executeUpdate(); // 인자로 sql 주면 안됨 
 			
 			//5. 결과 처리
 			result = count == 1;

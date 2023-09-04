@@ -6,18 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class UpdateTest01 {
-
+public class DeleteTest02 {
 	public static void main(String[] args) {
-		DeptVo vo = new DeptVo();
-		vo.setNo(2L);
-		vo.setName("품질관리팀");
-		
-		boolean result = updateDepartment(vo);
+		boolean result = deleteDepartmentByNo(1L);
 		System.out.println(result ? "성공" : "실패");
 	}
 
-	private static boolean updateDepartment(DeptVo vo) {	
+	private static boolean deleteDepartmentByNo(long no) {
 		boolean result = false;
 		
 		Connection conn = null;
@@ -30,22 +25,21 @@ public class UpdateTest01 {
 			//2. 연결하기
 			String url = "jdbc:mariadb://192.168.64.9:3307/webdb?charset=utf8";
 			conn = DriverManager.getConnection(url, "webdb", "webdb");
-
-			//3. SQL 준비 
+			
+			//3. SQL 실행
 			String sql =
-				"update dept" +
-				" set name=?" +
+				"delete" +
+				" from dept" +
 				" where no=?";
 			pstmt = conn.prepareStatement(sql);
 			
 			//4. binding
-			pstmt.setString(1,  vo.getName());
-			pstmt.setLong(2, vo.getNo());
+			pstmt.setLong(1, no);
 			
 			//5. SQL 실행 
-			int count =pstmt.executeUpdate(sql);
+			int count = pstmt.executeUpdate();
 			
-			//5. 결과 처리
+			//6. 결과 처리
 			result = count == 1;
 		} catch (ClassNotFoundException e) {
 			System.out.println("드라이버 로딩 실패:" + e);
@@ -67,5 +61,4 @@ public class UpdateTest01 {
 		
 		return result;
 	}
-
 }
