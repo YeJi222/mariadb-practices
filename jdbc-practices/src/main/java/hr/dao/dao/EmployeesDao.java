@@ -13,6 +13,7 @@ import hr.dao.vo.EmployeesVo;
 public class EmployeesDao {
 	public List<EmployeesVo> findByName(String keyword) {
 		List<EmployeesVo> result = new ArrayList<>();
+		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -80,6 +81,7 @@ public class EmployeesDao {
 
 	public List<EmployeesVo> findBySalary(int minSalary, int maxSalary) {
 		List<EmployeesVo> result = new ArrayList<>();
+		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -93,6 +95,15 @@ public class EmployeesDao {
 			conn = DriverManager.getConnection(url, "hr", "hr");
 
 			//3. SQL 준비 
+			/* Ex SQL
+				select a.first_name, b.salary
+				from employees a, salaries b
+				where a.emp_no = b.emp_no
+				and b.to_date = '9999-01-01'
+				and b.salary <= 50000
+				and b.salary >= 10000
+				order by b.salary desc, a.first_name asc; 
+			 */
 			String sql =
 					"select a.first_name, b.salary" +
 					" from employees a, salaries b" +
@@ -100,7 +111,7 @@ public class EmployeesDao {
 					" and b.to_date = '9999-01-01'" + 
 					" and b.salary <= ?" +
 					" and b.salary >= ?" +
-					" order by b.salary desc";
+					" order by b.salary desc, a.first_name asc";
 			pstmt = conn.prepareStatement(sql);
 			
 			//4. binding
