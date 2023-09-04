@@ -36,7 +36,7 @@ public class InsertTest02 {
 			pstmt = conn.prepareStatement(sql); // sql 준비 
 			
 			//4. 값 binding
-			pstmt.setLong(1, 1);
+			pstmt.setLong(1, 3);
 			pstmt.setString(2, name);
 			
 			//4. SQL 실행
