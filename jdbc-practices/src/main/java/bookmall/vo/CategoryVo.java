@@ -2,7 +2,7 @@ package bookmall.vo;
 
 public class CategoryVo {
 	private int no;
-	private int category_name;
+	private String category_name;
 	
 	public int getNo() {
 		return no;
@@ -10,10 +10,10 @@ public class CategoryVo {
 	public void setNo(int no) {
 		this.no = no;
 	}
-	public int getCategory_name() {
+	public String getCategoryName() {
 		return category_name;
 	}
-	public void setCategory_name(int category_name) {
+	public void setCategoryName(String category_name) {
 		this.category_name = category_name;
 	}
 	
