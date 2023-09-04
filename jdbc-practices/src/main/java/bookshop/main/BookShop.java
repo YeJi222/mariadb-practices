@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import bookshop.example.Book;
+import bookshop.vo.BookVo;
 
 public class BookShop {
 	public static void main(String[] args) {
