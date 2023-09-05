@@ -8,31 +8,31 @@ import bookmall.vo.CategoryVo;
 public class CategoryDaoTest {
 
 	public static void main(String[] args) {
-		boolean result1 = categoryInsertTest("컴퓨터/IT");
-		System.out.println(result1 ? "result1 - success to insert" : "result1 - fail to insert");
+		CategoryVo vo1 = new CategoryVo();
+		CategoryVo vo2 = new CategoryVo();
+		CategoryVo vo3 = new CategoryVo();
+		vo1.setCategoryName("컴퓨터/IT");
+		categoryInsertTest(vo1);
 		
-		boolean result2 = categoryInsertTest("경제");
-		System.out.println(result2 ? "result2 - success to insert" : "result2 - fail to insert");
+		vo2.setCategoryName("경제");
+		categoryInsertTest(vo2);
 		
-		findAllTest(); // category table 확인 
+		vo3.setCategoryName("예술");
+		categoryInsertTest(vo3);
+		
+		categoryFindAllTest(); // category table 확인 
 	}
 
-	private static boolean categoryInsertTest(String category_name) {
-		CategoryDao dao = new CategoryDao();
-		
-		CategoryVo vo = new CategoryVo();
-		vo.setCategoryName(category_name);
-		
-		boolean result = dao.insertCategory(vo);
-		
-		return result;
+	private static void categoryInsertTest(CategoryVo vo) {
+		new CategoryDao().insertCategory(vo);
 	}
 	
-	private static void findAllTest() {
+	private static void categoryFindAllTest() {
 		List<CategoryVo> list = new CategoryDao().findAllCategories();
 
+		int idx = 1;
 		for(CategoryVo vo : list) {
-			System.out.println(vo);
+			System.out.println("[" + idx++ + "] " + "카테고리 이름: " + vo.getCategoryName());
 		}
 	}
 
