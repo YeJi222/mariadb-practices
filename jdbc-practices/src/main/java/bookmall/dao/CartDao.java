@@ -37,7 +37,7 @@ public class CartDao {
 			}
 			// System.out.println("member_no :" + member_no);
 			
-			// get member_no using name
+			// get book_no using title
 			String selectSql2 = 
 					"select no from book" +
 					" where title = ?";
