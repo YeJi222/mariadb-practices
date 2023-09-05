@@ -2,40 +2,38 @@ package bookmall.dao.test;
 
 import java.util.List;
 
-import bookmall.dao.BookDao;
 import bookmall.dao.MemberDao;
 import bookmall.vo.MemberVo;
 
 public class MemberDaoTest {
 	public static void main(String[] args) {
-		boolean result1 = memberInsertTest("홍예지", "010-1111-2222", "aaa@gmail.com", "0000");
-		System.out.println(result1 ? "result1 - success to insert" : "result1 - fail to insert");
+		MemberVo vo1 = new MemberVo();
+		MemberVo vo2 = new MemberVo();
+		vo1.setName("홍예지");
+		vo1.setPhone("010-1111-2222");
+		vo1.setEmail("aaa@gmail.com");
+		vo1.setPassword("0000");
+		memberInsertTest(vo1);
 		
-		boolean result2 = memberInsertTest("둘리", "010-3333-4444", "bbb@gmail.com", "1111");
-		System.out.println(result2 ? "result2 - success to insert" : "result2 - fail to insert");
+		vo2.setName("둘리");
+		vo2.setPhone("010-3333-4444");
+		vo2.setEmail("bbb@gmail.com");
+		vo2.setPassword("1111");
+		memberInsertTest(vo2);
 		
 		memberFindAllTest(); // member table 확인 
 	}
 
-	private static boolean memberInsertTest(String name, String phone, String email, String password) {
-		MemberDao dao = new MemberDao();
-		
-		MemberVo vo = new MemberVo();
-		vo.setName(name);
-		vo.setPhone(phone);
-		vo.setEmail(email);
-		vo.setPassword(password);
-		
-		boolean result = dao.insertMember(vo);
-		
-		return result;
+	private static void memberInsertTest(MemberVo vo) {
+		new MemberDao().insertMember(vo);
 	}
 	
 	private static void memberFindAllTest() {
 		List<MemberVo> list = new MemberDao().findAllMembers();
 
 		for(MemberVo vo : list) {
-			System.out.println(vo);
+			System.out.println("이름: " + vo.getName() + ", 전화번호: " + vo.getPhone()
+					+ ", 이메일: " + vo.getEmail() + ", 비밀번호: " + vo.getPassword());
 		}
 	}
 }
