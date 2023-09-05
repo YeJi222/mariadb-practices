@@ -13,7 +13,6 @@ public class CartDaoTest {
 	public static void main(String[] args) {
 		CartVo vo1 = new CartVo();
 		CartVo vo2 = new CartVo();
-		CartVo vo3 = new CartVo();
 		
 		vo1.setUserName("홍예지");
 		vo1.setTitle("Do it! 점프 투 자바");

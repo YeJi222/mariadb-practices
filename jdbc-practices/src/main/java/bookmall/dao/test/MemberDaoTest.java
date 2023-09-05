@@ -3,6 +3,7 @@ package bookmall.dao.test;
 import java.util.List;
 
 import bookmall.dao.MemberDao;
+import bookmall.vo.CategoryVo;
 import bookmall.vo.MemberVo;
 
 public class MemberDaoTest {
@@ -31,8 +32,9 @@ public class MemberDaoTest {
 	private static void memberFindAllTest() {
 		List<MemberVo> list = new MemberDao().findAllMembers();
 
+		int idx = 1;
 		for(MemberVo vo : list) {
-			System.out.println("이름: " + vo.getName() + ", 전화번호: " + vo.getPhone()
+			System.out.println("[" + idx++ + "] 이름: " + vo.getName() + ", 전화번호: " + vo.getPhone()
 					+ ", 이메일: " + vo.getEmail() + ", 비밀번호: " + vo.getPassword());
 		}
 	}
