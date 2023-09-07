@@ -19,12 +19,10 @@ import bookmall.vo.OrdersVo;
 public class BookMall {
 
 	public static void main(String[] args) {
-		
-		////////////////// Member DAO //////////////////
+		////////////////// About Member //////////////////
 		MemberDao memberDao = new MemberDao();
 		MemberVo memberVo1 = new MemberVo();
 		MemberVo memberVo2 = new MemberVo();
-		
 		
 		// member1 set
 		memberVo1.setName("홍예지");
@@ -44,7 +42,7 @@ public class BookMall {
 		System.out.println("## 회원리스트"); // 2명 
 		memberFindAll(); 
 		
-		////////////////// Category DAO //////////////////
+		////////////////// About Category //////////////////
 		CategoryDao categoryDao = new CategoryDao();
 		CategoryVo categoryVo1 = new CategoryVo();
 		CategoryVo categoryVo2 = new CategoryVo();
@@ -62,7 +60,7 @@ public class BookMall {
 		System.out.println("## 카테고리"); // 3개
 		categoryFindAll(); 
 		
-		////////////////// Book DAO //////////////////
+		////////////////// About Book //////////////////
 		BookDao bookDao = new BookDao();
 		BookVo bookVo1 = new BookVo();
 		BookVo bookVo2 = new BookVo();
@@ -88,7 +86,7 @@ public class BookMall {
 		System.out.println("## 상품"); // 3개
 		bookFindAll(); 
 		
-		////////////////// Cart DAO //////////////////
+		////////////////// About Cart //////////////////
 		CartDao cartDao = new CartDao();
 		CartVo cartVo1 = new CartVo();
 		CartVo cartVo2 = new CartVo();
@@ -105,10 +103,10 @@ public class BookMall {
 		cartDao.insertToCart(cartVo2);
 		
 		System.out.println();
-		System.out.println("## 카트"); // 2개 
+		System.out.println("## 카트"); // 2개
 		cartFindAll(); 
 		
-		////////////////// Orders DAO //////////////////
+		////////////////// About Orders //////////////////
 		String order_code = createOrderCode();
 		
 		// Orders
@@ -160,6 +158,7 @@ public class BookMall {
 		return order_code;
 	}
 
+	////////////////// Display list //////////////////
 	private static void memberFindAll() {
 		List<MemberVo> list = new MemberDao().findAllMembers();
 

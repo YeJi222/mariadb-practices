@@ -126,7 +126,7 @@ public class CartDao {
 					int price = rs2.getInt(2);
 					
 					vo.setTitle(title);
-					vo.setPrice(price);
+					vo.setPrice(price * count);
 				}
 				result.add(vo);
 			}

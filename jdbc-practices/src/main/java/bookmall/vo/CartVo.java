@@ -5,6 +5,7 @@ public class CartVo {
 	private int member_no;
 	private int book_no;
 	private int count;
+	
 	private String userName;
 	private String title;
 	private int price;
