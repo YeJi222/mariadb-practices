@@ -23,7 +23,7 @@ public class CategoryDao {
 					"insert" +
 					" into category(category_name)" +
 					" values (?)";
-			pstmt = conn.prepareStatement(sql); // sql 준비 
+			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getCategoryName());
 			
 			pstmt.executeUpdate();

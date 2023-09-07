@@ -17,7 +17,7 @@ public class OrderDao {
 		Connection conn = null;
 		PreparedStatement pstmt1 = null;
 		PreparedStatement pstmt2 = null;
-		ResultSet rs1 = null;
+		ResultSet rs = null;
 		
 		try {
 			conn = getConnection();
@@ -26,21 +26,20 @@ public class OrderDao {
 			String selectSql1 = 
 					"select no from member" +
 					" where name = ?";
-			pstmt1 = conn.prepareStatement(selectSql1); // sql 준비 
-			pstmt1.setString(1, vo.getUserName()); // binding
+			pstmt1 = conn.prepareStatement(selectSql1);
+			pstmt1.setString(1, vo.getUserName());
 			
-			rs1 = pstmt1.executeQuery();
+			rs = pstmt1.executeQuery();
 			int member_no = 0;
-			if(rs1.next()) {
-				member_no = rs1.getInt(1);
+			if(rs.next()) {
+				member_no = rs.getInt(1);
 			}
-			// System.out.println("member_no :" + member_no);
 			
 			String insertSql =
 					"insert" +
 					" into orders(member_no, total_price, address, order_code)" +
 					" values (?, 0, ?, ?)";
-			pstmt2 = conn.prepareStatement(insertSql); // sql 준비 
+			pstmt2 = conn.prepareStatement(insertSql);
 			// binding
 			pstmt2.setInt(1, member_no);
 			pstmt2.setString(2, vo.getAddress());
@@ -57,8 +56,8 @@ public class OrderDao {
 				if(pstmt2 != null) {
 					pstmt2.close();
 				}
-				if(rs1 != null) {
-					rs1.close();
+				if(rs != null) {
+					rs.close();
 				}
 				if(conn != null) {
 					conn.close();
@@ -85,12 +84,12 @@ public class OrderDao {
 		try {
 			conn = getConnection();
 
-			// get book_no using book
+			// get book_no using title
 			String selectSql1 = 
 					"select no from book" +
 					" where title = ?";
-			pstmt1 = conn.prepareStatement(selectSql1); // sql 준비 
-			pstmt1.setString(1, vo.getTitle()); // binding
+			pstmt1 = conn.prepareStatement(selectSql1);
+			pstmt1.setString(1, vo.getTitle());
 			
 			rs1 = pstmt1.executeQuery();
 			int book_no = 0;
@@ -102,8 +101,8 @@ public class OrderDao {
 			String selectSql2 = 
 					"select no from orders" +
 					" where order_code = ?";
-			pstmt2 = conn.prepareStatement(selectSql2); // sql 준비 
-			pstmt2.setString(1, vo.getOrderCode()); // binding
+			pstmt2 = conn.prepareStatement(selectSql2); 
+			pstmt2.setString(1, vo.getOrderCode());
 			
 			rs2 = pstmt2.executeQuery();
 			
@@ -116,7 +115,7 @@ public class OrderDao {
 					"insert" +
 					" into order_book(order_no, book_no, count)" +
 					" values (?, ?, ?)";
-			pstmt3 = conn.prepareStatement(insertSql); // sql 준비 
+			pstmt3 = conn.prepareStatement(insertSql);
 			// binding
 			pstmt3.setInt(1, order_no);
 			pstmt3.setInt(2, book_no);
@@ -125,30 +124,31 @@ public class OrderDao {
 			pstmt3.executeUpdate();
 			
 			// update total_price 
-			String selectSql4 = "select total_price from orders where no = ?;";
-			pstmt6 = conn.prepareStatement(selectSql4);
-			pstmt6.setInt(1, order_no);
-			rs4 = pstmt6.executeQuery();
+			String selectSql3 = "select total_price from orders where no = ?;";
+			pstmt4 = conn.prepareStatement(selectSql3);
+			pstmt4.setInt(1, order_no);
+			rs4 = pstmt4.executeQuery();
 			int total_price = 0;
 			if(rs4.next()) {
 				total_price = rs4.getInt(1);
 			}
 			
-			String selectSql3 = "select price from book where no = ?;";
-			pstmt4 = conn.prepareStatement(selectSql3);
-			pstmt4.setInt(1, book_no);
-			rs3 = pstmt4.executeQuery();
+			String selectSql4 = "select price from book where no = ?;";
+			pstmt5 = conn.prepareStatement(selectSql4);
+			pstmt5.setInt(1, book_no);
+			rs3 = pstmt5.executeQuery();
 			
-			while(rs3.next()) {
+			if(rs3.next()) {
 				int price = rs3.getInt(1);
 				total_price += (price * vo.getOrderCount());
 			}
+			
 			String updateSql = "update orders set total_price = ?"
 					+ " where no = ?;";
-			pstmt5 = conn.prepareStatement(updateSql);
-			pstmt5.setInt(1, total_price);
-			pstmt5.setInt(2, order_no);
-			pstmt5.executeQuery();
+			pstmt6 = conn.prepareStatement(updateSql);
+			pstmt6.setInt(1, total_price);
+			pstmt6.setInt(2, order_no);
+			pstmt6.executeQuery();
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
 		} finally {
@@ -196,24 +196,24 @@ public class OrderDao {
 		List<OrdersVo> result = new ArrayList<>();
 		
 		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+		PreparedStatement pstmt1 = null;
 		PreparedStatement pstmt2 = null;
+		ResultSet rs1 = null;
 		ResultSet rs2 = null;
 		
 		try {
 			conn = getConnection();
 
-			String sql = "select * from orders;";
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
+			String sql1 = "select * from orders;";
+			pstmt1 = conn.prepareStatement(sql1);
+			rs1 = pstmt1.executeQuery();
 			
-			while(rs.next()) {
-				int no = rs.getInt(1);
-				int member_no = rs.getInt(2);
-				int total_price = rs.getInt(3);
-				String address = rs.getString(4);
-				String order_code = rs.getString(5);
+			while(rs1.next()) {
+				int no = rs1.getInt(1);
+				int member_no = rs1.getInt(2);
+				int total_price = rs1.getInt(3);
+				String address = rs1.getString(4);
+				String order_code = rs1.getString(5);
 				
 				OrdersVo vo = new OrdersVo();
 				vo.setNo(no);
@@ -227,7 +227,7 @@ public class OrderDao {
 				pstmt2.setInt(1, member_no);
 				rs2 = pstmt2.executeQuery();
 				
-				while(rs2.next()) {
+				if(rs2.next()) {
 					String name = rs2.getString(1);
 					String email = rs2.getString(2);
 					
@@ -242,11 +242,17 @@ public class OrderDao {
 			System.out.println("error:" + e);
 		} finally {
 			try {
-				if(rs != null) {
-					rs.close();
+				if(rs1 != null) {
+					rs1.close();
 				}
-				if(pstmt != null) {
-					pstmt.close();
+				if(rs2 != null) {
+					rs2.close();
+				}
+				if(pstmt1 != null) {
+					pstmt1.close();
+				}
+				if(pstmt2 != null) {
+					pstmt2.close();
 				}
 				if(conn != null) {
 					conn.close();
@@ -263,24 +269,21 @@ public class OrderDao {
 		List<OrderBookVo> result = new ArrayList<>();
 		
 		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+		PreparedStatement pstmt1 = null;
 		PreparedStatement pstmt2 = null;
+		ResultSet rs1 = null;
 		ResultSet rs2 = null;
-		PreparedStatement pstmt3 = null;
-		ResultSet rs3 = null;
-		PreparedStatement pstmt4 = null;
 		
 		try {
 			conn = getConnection();
 
-			String sql = "select book_no, count from order_book;";
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
+			String sql1 = "select book_no, count from order_book;";
+			pstmt1 = conn.prepareStatement(sql1);
+			rs1 = pstmt1.executeQuery();
 			
-			while(rs.next()) {
-				int book_no = rs.getInt(1);
-				int orderCount = rs.getInt(2);
+			while(rs1.next()) {
+				int book_no = rs1.getInt(1);
+				int orderCount = rs1.getInt(2);
 				
 				OrderBookVo vo = new OrderBookVo();
 				vo.setBookNo(book_no);
@@ -303,20 +306,17 @@ public class OrderDao {
 			System.out.println("error:" + e);
 		} finally {
 			try {
-				if(rs != null) {
-					rs.close();
+				if(rs1 != null) {
+					rs1.close();
 				}
 				if(rs2 != null) {
 					rs2.close();
 				}
-				if(pstmt != null) {
-					pstmt.close();
+				if(pstmt1 != null) {
+					pstmt1.close();
 				}
 				if(pstmt2 != null) {
 					pstmt2.close();
-				}
-				if(pstmt3 != null) {
-					pstmt3.close();
 				}
 				if(conn != null) {
 					conn.close();
@@ -343,5 +343,4 @@ public class OrderDao {
 		
 		return conn;
 	}
-
 }

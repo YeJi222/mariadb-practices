@@ -27,35 +27,33 @@ public class CartDao {
 			String selectSql1 = 
 					"select no from member" +
 					" where name = ?";
-			pstmt1 = conn.prepareStatement(selectSql1); // sql 준비 
-			pstmt1.setString(1, vo.getUserName()); // binding
+			pstmt1 = conn.prepareStatement(selectSql1);
+			pstmt1.setString(1, vo.getUserName());
 			
 			rs1 = pstmt1.executeQuery();
 			int member_no = 0;
 			if(rs1.next()) {
 				member_no = rs1.getInt(1);
 			}
-			// System.out.println("member_no :" + member_no);
 			
 			// get book_no using title
 			String selectSql2 = 
 					"select no from book" +
 					" where title = ?";
-			pstmt2 = conn.prepareStatement(selectSql2); // sql 준비 
-			pstmt2.setString(1, vo.getTitle()); // binding
+			pstmt2 = conn.prepareStatement(selectSql2);
+			pstmt2.setString(1, vo.getTitle());
 			
 			rs2 = pstmt2.executeQuery();
 			int book_no = 0;
 			if(rs2.next()) {
 				book_no = rs2.getInt(1);
 			}
-			// System.out.println("book_no :" + book_no);
 			
 			String insertSql =
 					"insert" +
 					" into cart(member_no, book_no, count)" +
 					" values (?, ?, ?)";
-			pstmt3 = conn.prepareStatement(insertSql); // sql 준비 
+			pstmt3 = conn.prepareStatement(insertSql);
 			// binding
 			pstmt3.setInt(1, member_no);
 			pstmt3.setInt(2, book_no);
@@ -94,23 +92,23 @@ public class CartDao {
 		List<CartVo> result = new ArrayList<>();
 		
 		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+		PreparedStatement pstmt1 = null;
 		PreparedStatement pstmt2 = null;
+		ResultSet rs1 = null;
 		ResultSet rs2 = null;
 		
 		try {
 			conn = getConnection();
 
-			String sql = "select * from cart;";
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
+			String sql1 = "select * from cart;";
+			pstmt1 = conn.prepareStatement(sql1);
+			rs1 = pstmt1.executeQuery();
 			
-			while(rs.next()) {
-				int no = rs.getInt(1);
-				int member_no = rs.getInt(2);
-				int book_no = rs.getInt(3);
-				int count = rs.getInt(4);
+			while(rs1.next()) {
+				int no = rs1.getInt(1);
+				int member_no = rs1.getInt(2);
+				int book_no = rs1.getInt(3);
+				int count = rs1.getInt(4);
 				
 				CartVo vo = new CartVo();
 				vo.setNo(no);
@@ -118,14 +116,12 @@ public class CartDao {
 				vo.setBookNo(book_no);
 				vo.setCount(count);
 				
-				// System.out.println("book_no : " + book_no);
-				
 				String sql2 = "select title, price from book where no = ?;";
 				pstmt2 = conn.prepareStatement(sql2);
 				pstmt2.setInt(1, book_no);
 				rs2 = pstmt2.executeQuery();
 				
-				while(rs2.next()) {
+				if(rs2.next()) {
 					String title = rs2.getString(1);
 					int price = rs2.getInt(2);
 					
@@ -139,11 +135,17 @@ public class CartDao {
 			System.out.println("error:" + e);
 		} finally {
 			try {
-				if(rs != null) {
-					rs.close();
+				if(rs1 != null) {
+					rs1.close();
 				}
-				if(pstmt != null) {
-					pstmt.close();
+				if(rs2 != null) {
+					rs2.close();
+				}
+				if(pstmt1 != null) {
+					pstmt1.close();
+				}
+				if(pstmt2 != null) {
+					pstmt2.close();
 				}
 				if(conn != null) {
 					conn.close();

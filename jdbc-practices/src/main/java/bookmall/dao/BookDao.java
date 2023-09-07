@@ -14,7 +14,7 @@ public class BookDao {
 
 	public void insertBook(BookVo vo) {
 		Connection conn = null;
-		PreparedStatement pstmt = null;
+		PreparedStatement pstmt1 = null;
 		PreparedStatement pstmt2 = null;
 		ResultSet rs = null;
 		
@@ -24,21 +24,20 @@ public class BookDao {
 			String selectSql = 
 					"select no from category" +
 					" where category_name = ?";
-			pstmt = conn.prepareStatement(selectSql); // sql 준비 
-			pstmt.setString(1, vo.getCategoryName()); // binding
+			pstmt1 = conn.prepareStatement(selectSql);
+			pstmt1.setString(1, vo.getCategoryName());
 			
-			rs = pstmt.executeQuery();
+			rs = pstmt1.executeQuery();
 			int category_no = 0;
 			if(rs.next()) {
 				category_no = rs.getInt(1);
 			}
-			// System.out.println("category_no : " + category_no);
 			
 			String insertSql =
 					"insert" +
 					" into book(category_no, title, price)" +
 					" values (?, ?, ?)";
-			pstmt2 = conn.prepareStatement(insertSql); // sql 준비 
+			pstmt2 = conn.prepareStatement(insertSql);
 			// binding
 			pstmt2.setInt(1, category_no);
 			pstmt2.setString(2, vo.getTitle());
@@ -49,8 +48,14 @@ public class BookDao {
 			System.out.println("error:" + e);
 		} finally {
 			try {
-				if(pstmt != null) {
-					pstmt.close();
+				if(pstmt1 != null) {
+					pstmt1.close();
+				}
+				if(pstmt2 != null) {
+					pstmt2.close();
+				}
+				if(rs != null) {
+					rs.close();
 				}
 				if(conn != null) {
 					conn.close();
@@ -73,11 +78,8 @@ public class BookDao {
 
 			String sql = "select * from book;";
 			pstmt = conn.prepareStatement(sql);
-			
-			//4. SQL 실행
 			rs = pstmt.executeQuery();
-			
-			//5. 결과 처리
+
 			while(rs.next()) {
 				int no = rs.getInt(1);
 				int category_no = rs.getInt(2);
@@ -126,10 +128,5 @@ public class BookDao {
 		}
 		
 		return conn;
-	}
-
-	public void updateRent(bookshop.vo.BookVo vo) {
-		// TODO Auto-generated method stub
-		
 	}
 }
