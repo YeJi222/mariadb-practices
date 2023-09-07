@@ -127,4 +127,9 @@ public class BookDao {
 		
 		return conn;
 	}
+
+	public void updateRent(bookshop.vo.BookVo vo) {
+		// TODO Auto-generated method stub
+		
+	}
 }

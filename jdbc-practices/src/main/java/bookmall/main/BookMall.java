@@ -25,11 +25,14 @@ public class BookMall {
 		MemberVo memberVo1 = new MemberVo();
 		MemberVo memberVo2 = new MemberVo();
 		
+		
+		// member1 set
 		memberVo1.setName("홍예지");
 		memberVo1.setPhone("010-1111-2222");
 		memberVo1.setEmail("aaa@gmail.com");
 		memberVo1.setPassword("0000");
 		
+		// member2 set 
 		memberVo2.setName("둘리");
 		memberVo2.setPhone("010-3333-3333");
 		memberVo2.setEmail("bbb@gmail.com");
@@ -108,7 +111,7 @@ public class BookMall {
 		////////////////// Orders DAO //////////////////
 		String order_code = createOrderCode();
 		
-		// Orders 
+		// Orders
 		OrderDao orderDao = new OrderDao();
 		OrdersVo ordersVo1 = new OrdersVo();
 		
